@@ -1,0 +1,158 @@
+// ---------- REM-CALC mixin
+// Shamlessly taken from Zurb-Foundation Framework.
+
+$rem-base: 14px;
+
+// STRIP UNIT
+// It strips the unit of measure and returns it
+@function strip-unit($num) {
+    @return $num / ($num * 0 + 1);
+}
+
+// CONVERT TO REM
+@function convert-to-rem($value, $base-value: $rem-base) {
+    $value: strip-unit($value) / strip-unit($base-value) * 1rem;
+    @if ($value == 0rem) { $value: 0; } // Turn 0rem into 0
+    @return $value;
+}
+
+// REM CALC
+
+// New Syntax, allows to optionally calculate on a different base value to counter compounding effect of rem's.
+// Call with 1, 2, 3 or 4 parameters, 'px' is not required but supported:
+//
+//   rem-calc(10 20 30px 40);
+//
+// Space delimited, if you want to delimit using comma's, wrap it in another pair of brackets
+//
+//   rem-calc((10, 20, 30, 40px));
+//
+// Optionally call with a different base (eg: 8px) to calculate rem.
+//
+//   rem-calc(16px 32px 48px, 8px);
+//
+// If you require to comma separate your list
+//
+//   rem-calc((16px, 32px, 48), 8px);
+
+@function rem-calc($values, $base-value: $rem-base) {
+    $max: length($values);
+
+    @if $max == 1 { @return convert-to-rem(nth($values, 1), $base-value); }
+
+    $remValues: ();
+    @for $i from 1 through $max {
+        $remValues: append($remValues, convert-to-rem(nth($values, $i), $base-value));
+    }
+    @return $remValues;
+}
+
+
+// Horizontal center align
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+// Vertical center align
+.valign-wrapper {
+    -webkit-align-items: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-align: center;
+    -webkit-flex-align: center;
+
+    .valign {
+        display: block;
+    }
+}
+
+// Transform <hr/> element into a vertical line divider
+.v-line-divider {
+    border: 1px solid;
+    border-color: black;
+    content: '';
+    display: inline;
+    margin: 0 rem-calc(10);
+    width: 0;
+}
+// Transform <hr/> element into a dot divider
+.v-dot-divider {
+    @extend .v-line-divider;
+    display: inline-block;
+}
+
+// Generate empty vertical div from 2 to 50 px high.
+@mixin make-vseparator-classes($iterations) {
+    @for $i from 2 through $iterations {
+        .v-separator-#{$i} {
+            content: '';
+            display: block;
+            padding: rem-calc($i / 2) 0;
+        }
+    }
+}
+@include make-vseparator-classes(50);
+
+// $name: name of the class (will be suffixed with numerical value)
+// $iterations: number of values to generate.
+// $property: the css property to generate
+// $unit: the unit to use, if no unit is specified then rem is used.
+@mixin make-numeric-class($name, $iterations, $property, $unit:false) {
+    @for $i from 0 through $iterations {
+        @if $unit {
+            .#{$name + $i} {
+                #{$property}: #{$i + $unit} !important;
+            }
+        } @else {
+            .#{$name + $i} {
+                #{$property}: rem-calc($i) !important;
+            }
+        }
+    }
+}
+
+// Auto-generate margin and padding classes
+// EX:
+// ml30 = margin-left: 30px;
+// p12 = padding: 12px;
+@include make-numeric-class('m', 100, 'margin');
+@include make-numeric-class('ml', 100, 'margin-left');
+@include make-numeric-class('mr', 100, 'margin-right');
+@include make-numeric-class('mt', 100, 'margin-top');
+@include make-numeric-class('mb', 100, 'margin-bottom');
+
+@include make-numeric-class('p', 100, 'padding');
+@include make-numeric-class('pl', 100, 'padding-left');
+@include make-numeric-class('pr', 100, 'padding-right');
+@include make-numeric-class('pt', 100, 'padding-top');
+@include make-numeric-class('pb', 100, 'padding-bottom');
+
+// Fonction de debug permetant d'entourer les elements de la classe
+// passé en armument en rouge,
+// et optionellement de rajouter un fond bleu-clair.
+@mixin debug($class, $with-background:false) {
+    .#{$class} {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border: 1px solid red;
+        @if $with-background {
+            background-color: rgba(lightblue, .7);
+        }
+    }
+}
+
+// Classe permetant de mettre en evidence
+// qu'il reste queleque-chose a faire sur un element
+.todo {
+    text-decoration: underline $orange;
+    &:before {
+        color: yellow;
+        content: 'TODO:';
+    }
+}
