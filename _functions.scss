@@ -1,7 +1,7 @@
 // $name: name of the class (will be suffixed with numerical value)
 // $iterations: number of values to generate.
 // $property: the css property to generate
-// $unit: the unit to use, if no unit is specified then rem is used.
+// $unit: the unit to use, if no unit is specified then px is used.
 @mixin make-numeric-class($name, $iterations, $property, $unit:false) {
     @for $i from 0 through $iterations{
         @if $unit {
