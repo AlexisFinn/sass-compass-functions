@@ -1,0 +1,32 @@
+$border-styles: (
+        solid,
+        double,
+        dashed,
+        dotted
+);
+
+@each $style in $border-styles {
+
+    .b-#{$style} {
+        border-style: $style !important;
+    }
+    .bt-#{$style} {
+        border-top-style: $style !important;
+    }
+    .br-#{$style} {
+        border-right-style: $style !important;
+    }
+    .bb-#{$style} {
+        border-bottom-style: $style !important;
+    }
+    .bl-#{$style} {
+        border-left-style: $style !important;
+    }
+}
+
+
+@include make-numeric-class('b', 5, 'border-width', 'px');
+@include make-numeric-class('bt', 5, 'border-top-width', 'px');
+@include make-numeric-class('br', 5, 'border-right-width', 'px');
+@include make-numeric-class('bb', 5, 'border-bottom-width', 'px');
+@include make-numeric-class('bl', 5, 'border-left-width', 'px');

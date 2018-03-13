@@ -1,0 +1,107 @@
+// Horizontal center align
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+// Vertical center align
+.valign-wrapper {
+    -webkit-align-items: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-align: center;
+    -webkit-flex-align: center;
+
+    .valign {
+        display: block;
+    }
+}
+// Transform <hr/> element into a vertical line divider
+.v-line-divider {
+    border: 1px solid;
+    border-color: black;
+    content: '';
+    display: inline;
+    margin: 0 rem-calc(10);
+    width: 0;
+}
+// Transform <hr/> element into a dot divider
+.v-dot-divider {
+    @extend .v-line-divider;
+    display: inline-block;
+}
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+.row-eq-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+// Generate empty vertical div from 2 to 50 px high.
+@include make-vseparator-classes(50);
+
+// Auto-generate margin and padding classes
+// EX:
+// ml30 = margin-left: 30px;
+// p12 = padding: 12px;
+@include make-numeric-class( 'm', 50, 'margin', 'px');
+@include make-numeric-class( 'ml', 50, 'margin-left', 'px');
+@include make-numeric-class( 'mr', 50, 'margin-right', 'px');
+@include make-numeric-class( 'mt', 50, 'margin-top', 'px');
+@include make-numeric-class( 'mb', 50, 'margin-bottom', 'px');
+@include make-numeric-class( 'p', 50, 'padding', 'px');
+@include make-numeric-class( 'pl', 50, 'padding-left', 'px');
+@include make-numeric-class( 'pr', 50, 'padding-right', 'px');
+@include make-numeric-class( 'pt', 50, 'padding-top', 'px');
+@include make-numeric-class( 'pb', 50, 'padding-bottom', 'px');
+
+// Classe permetant de mettre en evidence
+// qu'il reste queleque-chose a faire sur un element
+
+.todo {
+    text-decoration: underline orange;
+
+    &::before {
+        color: blue;
+        content: 'TODO:';
+    }
+}
+// Grille condense, sans marges.
+.condensed-grid .row,
+.condensed-grid.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.condensed-grid [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+// Helpers de texte
+.text-normal {
+    font-weight: normal;
+}
+
+.singleline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pointer {
+    cursor: pointer !important;
+}
+
+.cursor-default {
+    cursor: default !important;
+}
+
